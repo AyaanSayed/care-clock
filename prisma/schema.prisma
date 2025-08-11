@@ -41,6 +41,7 @@ model User {
   role          Role      @default(care_worker)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  manager       Manager?
 }
 
 model Account {
@@ -80,4 +81,17 @@ model VerificationToken {
   expires    DateTime
 
   @@id([identifier, token])
+}
+
+model Manager {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @unique
+  organization String
+  latitude     Float
+  longitude    Float
+  radius       Float    @default(2.0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
