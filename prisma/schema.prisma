@@ -42,6 +42,7 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   manager       Manager?
+  shifts     Shift[]   @relation("CareWorkerShifts")
 }
 
 model Account {
@@ -94,4 +95,40 @@ model Manager {
   updatedAt    DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  careWorkers  Shift[]   @relation("ManagerOfShifts")
+}
+
+model Shift {
+  id             Int       @id @default(autoincrement())
+  careWorkerId   Int
+  managerId      Int
+  organization   String
+
+  // Clock-in details
+  clockInTime    DateTime  @default(now())
+  clockInLat     Float?
+  clockInLng     Float?
+  clockInNote    String?
+
+  // Clock-out details
+  clockOutTime   DateTime?
+  clockOutLat    Float?
+  clockOutLng    Float?
+  clockOutNote   String?
+
+  status         ShiftStatus @default(ACTIVE)
+
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // Relations
+  careWorker     User      @relation("CareWorkerShifts", fields: [careWorkerId], references: [id], onDelete: Cascade)
+  manager        Manager   @relation("ManagerOfShifts", fields: [managerId], references: [id], onDelete: Cascade)
+}
+
+
+enum ShiftStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
 }
