@@ -15,6 +15,13 @@ const Navbar = async () => {
           <Radar />
           <span>CARE CLOCK</span>
         </Link>
+        {
+          session?.user.role === "care_worker" ? (
+            <Link href="/care-worker/history" className={buttonVariants()}>
+              history
+            </Link>
+          ) : null
+        }
         {session?.user ? (
           <UserAccountNav />
         ) : (
