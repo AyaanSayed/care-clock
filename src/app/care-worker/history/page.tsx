@@ -149,7 +149,7 @@ export default function CareWorkerShiftHistory() {
         </table>
       </div>
 
-      {/* Pagination Controls */}
+      {/* Pagination Controls
       {pagination && pagination.totalPages > 1 && (
         <div className="flex justify-between items-center mt-4">
           <Button
@@ -168,7 +168,21 @@ export default function CareWorkerShiftHistory() {
             Next
           </Button>
         </div>
-      )}
+      )} */}
+      {/* Pagination */}
+            {pagination && pagination.totalPages > 1 && (
+              <div className="flex justify-center gap-2 mt-4">
+                <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
+                  Prev
+                </Button>
+                <span className="px-3 py-1 border rounded">
+                  Page {pagination.page} of {pagination.totalPages}
+                </span>
+                <Button variant="outline" size="sm" onClick={() => setPage((prev) => Math.min(prev + 1, pagination.totalPages))} disabled={page === pagination.totalPages}>
+                  Next
+                </Button>
+              </div>
+            )}
     </div>
   );
 }

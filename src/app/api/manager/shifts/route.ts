@@ -7,17 +7,38 @@ import { startOfDay, endOfDay } from "date-fns";
 export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || session.user.role !== "care_worker") {
+
+    if (!session || session.user.role !== "manager") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // 1. Get Manager.id from the logged-in user's User.id
+    const managerRecord = await db.manager.findUnique({
+      where: { userId: parseInt(session.user.id) },
+    });
+
+    if (!managerRecord) {
+      return NextResponse.json({ error: "Manager not found" }, { status: 404 });
+    }
+
     const { searchParams } = new URL(req.url);
+    const careWorkerId = searchParams.get("careWorkerId");
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "10", 10);
 
-    let whereClause: any = { careWorkerId: parseInt(session.user.id) };
+    if (!careWorkerId) {
+      return NextResponse.json(
+        { error: "careWorkerId is required" },
+        { status: 400 }
+      );
+    }
+
+    let whereClause: any = {
+      careWorkerId: parseInt(careWorkerId),
+      managerId: managerRecord.id, // ✅ Use Manager.id, not User.id
+    };
 
     if (startDate) {
       whereClause.clockInTime = {
@@ -33,14 +54,13 @@ export async function GET(req: Request) {
       };
     }
 
-    // Count total records for pagination
-    const totalCount = await db.shift.count({ where: whereClause });
+    const total = await db.shift.count({ where: whereClause });
 
-    // Fetch paginated records
     const shifts = await db.shift.findMany({
       where: whereClause,
       include: {
         manager: { include: { user: true } },
+        careWorker: true,
       },
       orderBy: { clockInTime: "desc" },
       skip: (page - 1) * limit,
@@ -48,16 +68,13 @@ export async function GET(req: Request) {
     });
 
     return NextResponse.json({
-      data: shifts,
-      pagination: {
-        total: totalCount,
-        page,
-        limit,
-        totalPages: Math.ceil(totalCount / limit),
-      },
+      shifts,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
     });
   } catch (error) {
-    console.error("Shift history error:", error);
+    console.error("Manager shift fetch error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
