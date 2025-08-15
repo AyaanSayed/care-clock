@@ -35,7 +35,7 @@ export default function CareWorkerShiftHistory() {
   const [endDate, setEndDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const limit = 10; // rows per page
+  const limit = 10; 
 
   const fetchShifts = async () => {
     try {
@@ -149,26 +149,7 @@ export default function CareWorkerShiftHistory() {
         </table>
       </div>
 
-      {/* Pagination Controls
-      {pagination && pagination.totalPages > 1 && (
-        <div className="flex justify-between items-center mt-4">
-          <Button
-            disabled={page === 1}
-            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-          >
-            Previous
-          </Button>
-          <span>
-            Page {pagination.page} of {pagination.totalPages}
-          </span>
-          <Button
-            disabled={page === pagination.totalPages}
-            onClick={() => setPage((prev) => Math.min(prev + 1, pagination.totalPages))}
-          >
-            Next
-          </Button>
-        </div>
-      )} */}
+      
       {/* Pagination */}
             {pagination && pagination.totalPages > 1 && (
               <div className="flex justify-center gap-2 mt-4">

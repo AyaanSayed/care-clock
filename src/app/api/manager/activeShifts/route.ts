@@ -1,5 +1,3 @@
-// /app/api/manager/activeShifts/route.ts
-
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
@@ -9,12 +7,12 @@ export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions);
 
-    // Must be logged in and a manager
+    
     if (!session || session.user.role !== "manager") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get manager's record to find their ID
+    
     const manager = await db.manager.findUnique({
       where: { userId: parseInt(session.user.id) },
     });
@@ -23,12 +21,12 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Manager not found" }, { status: 404 });
     }
 
-    // Parse query params
+    
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "10", 10);
 
-    // Count total active shifts
+    
     const total = await db.shift.count({
       where: {
         managerId: manager.id,
@@ -36,14 +34,14 @@ export async function GET(req: Request) {
       },
     });
 
-    // Fetch paginated active shifts
+    
     const activeShifts = await db.shift.findMany({
       where: {
         managerId: manager.id,
         status: "ACTIVE",
       },
       include: {
-        careWorker: true, // Include care worker's user details
+        careWorker: true, 
       },
       orderBy: {
         clockInTime: "desc",

@@ -24,7 +24,7 @@ export default function ManagerActiveShiftsList() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const limit = 10; // default per page
+  const limit = 10; 
 
   const fetchActiveShifts = async (pageNumber: number) => {
     try {

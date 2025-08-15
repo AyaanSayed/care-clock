@@ -12,7 +12,7 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // 1. Get Manager.id from the logged-in user's User.id
+    // Get Manager.id from the logged-in user's User.id
     const managerRecord = await db.manager.findUnique({
       where: { userId: parseInt(session.user.id) },
     });
@@ -37,7 +37,7 @@ export async function GET(req: Request) {
 
     let whereClause: any = {
       careWorkerId: parseInt(careWorkerId),
-      managerId: managerRecord.id, // ✅ Use Manager.id, not User.id
+      managerId: managerRecord.id, 
     };
 
     if (startDate) {
