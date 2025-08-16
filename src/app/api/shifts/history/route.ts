@@ -16,8 +16,14 @@ export async function GET(req: Request) {
     const endDate = searchParams.get("endDate");
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "10", 10);
-
-    const whereClause: any = { careWorkerId: parseInt(session.user.id) };
+    interface WhereClause {
+      careWorkerId: number;
+      clockInTime?: {
+        gte?: Date;
+        lte?: Date;
+      };
+    }
+    const whereClause: WhereClause = { careWorkerId: parseInt(session.user.id) };
 
     if (startDate) {
       whereClause.clockInTime = {

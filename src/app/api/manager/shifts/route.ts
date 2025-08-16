@@ -35,7 +35,16 @@ export async function GET(req: Request) {
       );
     }
 
-    const whereClause : any = {
+    interface WhereClause {
+      careWorkerId: number;
+      managerId: number;
+      clockInTime?: {
+        gte?: Date;
+        lte?: Date;
+      };
+    }
+
+    const whereClause: WhereClause = {
       careWorkerId: parseInt(careWorkerId),
       managerId: managerRecord.id, 
     };

@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 
 interface DataTableRow {
   status: string;
-  [key: string]: any;
+  [key: string]: string | number | boolean | null | undefined;
 }
 
 interface DataTableProps<TData extends DataTableRow> {
