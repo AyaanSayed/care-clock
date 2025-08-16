@@ -9,7 +9,21 @@ export default async function Home() {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return <div className="text-center text-red-500 mt-10">Sign in to continue</div>;
+     return (
+      <div className="text-center mt-10 flex items-center flex-col gap-4 justify-center min-h-96">
+        <h1 className="text-2xl">
+          Welcome to <span className="font-bold">CARE CLOCK</span>.
+        </h1>
+        <h2 className="text-3xl">Where you can manage your shifts effectively.</h2>
+        <Link
+          className={`${buttonVariants({ variant: "outline" })} hover:underline`}
+          href="/sign-in"
+        >
+          Sign in
+        </Link>
+        <span> to continue</span>
+      </div>
+    );
   }
 
   if (session.user.role === "manager") {
