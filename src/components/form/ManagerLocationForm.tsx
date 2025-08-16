@@ -11,7 +11,7 @@ export default function ManagerLocationForm() {
   const { data: session, status } = useSession();
 
   const [organization, setOrganization] = useState("");
-  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(
+  const [coords, setCoords] = useState<{ lat: number | undefined; lng: number | undefined } | null>(
     null
   );
   const [loadingLocation, setLoadingLocation] = useState(false);
@@ -208,10 +208,10 @@ export default function ManagerLocationForm() {
             placeholder="Latitude"
             value={coords?.lat ?? ""}
             onChange={(e) =>
-              setCoords({
+              setCoords(coords?.lng !== undefined ? {
                 lat: e.target.value ? parseFloat(e.target.value) : undefined,
-                lng: coords?.lng,
-              } as any)
+                lng: coords.lng,
+              } : null)
             }
           />
 
@@ -221,10 +221,10 @@ export default function ManagerLocationForm() {
             placeholder="Longitude"
             value={coords?.lng ?? ""}
             onChange={(e) =>
-              setCoords({
+              setCoords(coords?.lat !== undefined ? {
                 lng: e.target.value ? parseFloat(e.target.value) : undefined,
-                lat: coords?.lat,
-              } as any)
+                lat: coords.lat,
+              } : null)
             }
           />
         </div>
