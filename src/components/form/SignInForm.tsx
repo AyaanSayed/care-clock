@@ -40,7 +40,7 @@ const SignInForm = () => {
   if(signInData?.error){
         toast.error("Oops! Something went wrong.")
   }else{
-    router.push('/admin')
+    router.push('/')
     router.refresh();
   }
 }

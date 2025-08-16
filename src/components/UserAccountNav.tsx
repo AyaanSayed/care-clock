@@ -12,6 +12,7 @@ const UserAccountNav = () => {
         })
       }
       variant="destructive"
+      size="sm"
     >
       Sign out
     </Button>

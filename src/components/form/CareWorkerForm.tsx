@@ -200,6 +200,7 @@ export default function CareWorkerClockForm() {
     <div className="max-w-md mx-auto space-y-6 p-6 border rounded-lg shadow-sm bg-white">
       {activeShift ? (
         <>
+          <h2>Clock out of your current shift.</h2>
           <div>
             <Label className="font-medium">Manager</Label>
             <p className="mt-1">
@@ -234,6 +235,7 @@ export default function CareWorkerClockForm() {
         </>
       ) : (
         <>
+        <h2>Clock in to your shift.</h2>
           <div className="space-y-2">
             <Label className="font-medium">Manager</Label>
             <Select
