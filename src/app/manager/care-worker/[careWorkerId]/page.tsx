@@ -11,7 +11,11 @@ interface Shift {
   id: number;
   organization: string;
   clockInTime: string;
+  clockInLat: number | null;
   clockOutTime: string | null;
+  clockOutLat: number | null;
+  clockInLng: number | null;
+  clockOutLng: number | null;
   clockInNote: string | null;
   clockOutNote: string | null;
   status: string;
@@ -99,6 +103,7 @@ export default function CareWorkerShiftsPage() {
             id="startDate"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
+            placeholder="Select start date"
           />
         </div>
         <div className="flex flex-col w-full sm:w-auto">
@@ -108,6 +113,7 @@ export default function CareWorkerShiftsPage() {
             id="endDate"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
+            placeholder="Select end date"
           />
         </div>
         <Button
@@ -130,8 +136,12 @@ export default function CareWorkerShiftsPage() {
               <th className="px-2 sm:px-4 py-2 border">Manager</th>
               <th className="px-2 sm:px-4 py-2 border">Organisation</th>
               <th className="px-2 sm:px-4 py-2 border">Clock In</th>
-              <th className="px-2 sm:px-4 py-2 border">Clock Out</th>
+              <th className="px-2 sm:px-4 py-2 border">Clock In latitude</th>
+              <th className="px-2 sm:px-4 py-2 border">Clock In longitude</th>
               <th className="px-2 sm:px-4 py-2 border">Clock-In Note</th>
+              <th className="px-2 sm:px-4 py-2 border">Clock Out</th>
+              <th className="px-2 sm:px-4 py-2 border">Clock-Out Latitude</th>
+              <th className="px-2 sm:px-4 py-2 border">Clock-Out Longitude</th>
               <th className="px-2 sm:px-4 py-2 border">Clock-Out Note</th>
               <th className="px-2 sm:px-4 py-2 border">Status</th>
             </tr>
@@ -149,14 +159,20 @@ export default function CareWorkerShiftsPage() {
                   <td className="px-2 sm:px-4 py-2 border whitespace-nowrap">
                     {new Date(shift.clockInTime).toLocaleString()}
                   </td>
+                  <td className="px-2 sm:px-4 py-2 border">{shift.clockInLat || "-"}</td>
+                  <td className="px-2 sm:px-4 py-2 border">{shift.clockInLng || "-"}</td>
+                  <td className="px-2 sm:px-4 py-2 border break-words max-w-[200px]">
+                    {shift.clockInNote || "-"}
+                  </td>
                   <td className="px-2 sm:px-4 py-2 border whitespace-nowrap">
                     {shift.clockOutTime
                       ? new Date(shift.clockOutTime).toLocaleString()
                       : "-"}
                   </td>
-                  <td className="px-2 sm:px-4 py-2 border break-words max-w-[200px]">
-                    {shift.clockInNote || "-"}
+                  <td className="px-2 sm:px-4 py-2 border">
+                    {shift.clockOutLat || "-"}
                   </td>
+                  <td className="px-2 sm:px-4 py-2 border">{shift.clockOutLng || "-"}</td>
                   <td className="px-2 sm:px-4 py-2 border break-words max-w-[200px]">
                     {shift.clockOutNote || "-"}
                   </td>

@@ -35,7 +35,7 @@ export default function CareWorkerShiftHistory() {
   const [endDate, setEndDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const limit = 10; 
+  const limit = 10;
 
   const fetchShifts = async () => {
     try {
@@ -81,6 +81,7 @@ export default function CareWorkerShiftHistory() {
             id="startDate"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
+            placeholder="Select start date"
           />
         </div>
 
@@ -91,11 +92,15 @@ export default function CareWorkerShiftHistory() {
             id="endDate"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
+            placeholder="Select end date"
           />
         </div>
 
         <Button
-          onClick={() => { setPage(1); fetchShifts(); }}
+          onClick={() => {
+            setPage(1);
+            fetchShifts();
+          }}
           disabled={loading}
           className="w-full sm:w-auto"
         >
@@ -121,13 +126,19 @@ export default function CareWorkerShiftHistory() {
             {shifts.length > 0 ? (
               shifts.map((shift) => (
                 <tr key={shift.id} className="hover:bg-gray-50">
-                  <td className="px-2 sm:px-4 py-2 border">{shift.manager?.user?.username || "-"}</td>
-                  <td className="px-2 sm:px-4 py-2 border">{shift.organization}</td>
+                  <td className="px-2 sm:px-4 py-2 border">
+                    {shift.manager?.user?.username || "-"}
+                  </td>
+                  <td className="px-2 sm:px-4 py-2 border">
+                    {shift.organization}
+                  </td>
                   <td className="px-2 sm:px-4 py-2 border whitespace-nowrap">
                     {new Date(shift.clockInTime).toLocaleString()}
                   </td>
                   <td className="px-2 sm:px-4 py-2 border whitespace-nowrap">
-                    {shift.clockOutTime ? new Date(shift.clockOutTime).toLocaleString() : "-"}
+                    {shift.clockOutTime
+                      ? new Date(shift.clockOutTime).toLocaleString()
+                      : "-"}
                   </td>
                   <td className="px-2 sm:px-4 py-2 border break-words max-w-[200px]">
                     {shift.clockInNote || "-"}
@@ -135,12 +146,17 @@ export default function CareWorkerShiftHistory() {
                   <td className="px-2 sm:px-4 py-2 border break-words max-w-[200px]">
                     {shift.clockOutNote || "-"}
                   </td>
-                  <td className="px-2 sm:px-4 py-2 border">{shift.status || "-"}</td>
+                  <td className="px-2 sm:px-4 py-2 border">
+                    {shift.status || "-"}
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={7} className="text-center py-4 text-gray-500 text-sm">
+                <td
+                  colSpan={7}
+                  className="text-center py-4 text-gray-500 text-sm"
+                >
                   No shift history found
                 </td>
               </tr>
@@ -149,21 +165,32 @@ export default function CareWorkerShiftHistory() {
         </table>
       </div>
 
-      
       {/* Pagination */}
-            {pagination && pagination.totalPages > 1 && (
-              <div className="flex justify-center gap-2 mt-4">
-                <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
-                  Prev
-                </Button>
-                <span className="px-3 py-1 border rounded">
-                  Page {pagination.page} of {pagination.totalPages}
-                </span>
-                <Button variant="outline" size="sm" onClick={() => setPage((prev) => Math.min(prev + 1, pagination.totalPages))} disabled={page === pagination.totalPages}>
-                  Next
-                </Button>
-              </div>
-            )}
+      {pagination && pagination.totalPages > 1 && (
+        <div className="flex justify-center gap-2 mt-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+          >
+            Prev
+          </Button>
+          <span className="px-3 py-1 border rounded">
+            Page {pagination.page} of {pagination.totalPages}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              setPage((prev) => Math.min(prev + 1, pagination.totalPages))
+            }
+            disabled={page === pagination.totalPages}
+          >
+            Next
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

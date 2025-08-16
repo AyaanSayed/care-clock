@@ -18,6 +18,7 @@ export default function ManagerLocationForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submittingUpdate, setSubmittingUpdate] = useState(false);
 
+  // Fetch browser location
   const getLocation = () => {
     if (!navigator.geolocation) {
       toast.error("Geolocation is not supported by your browser.");
@@ -41,6 +42,7 @@ export default function ManagerLocationForm() {
     );
   };
 
+  // Fetch existing manager data if available
   useEffect(() => {
     if (!session || session.user.role !== "manager") return;
 
@@ -64,6 +66,7 @@ export default function ManagerLocationForm() {
     fetchExistingManager();
   }, [session]);
 
+  // Save Organisation
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -72,7 +75,7 @@ export default function ManagerLocationForm() {
       return;
     }
     if (!coords) {
-      toast.error("Please fetch your location before submitting.");
+      toast.error("Please provide latitude and longitude before submitting.");
       return;
     }
 
@@ -101,13 +104,14 @@ export default function ManagerLocationForm() {
     setSubmitting(false);
   };
 
+  // Update Organisation
   const handleUpdate = async () => {
     if (!organization.trim()) {
       toast.error("Please enter an organisation name.");
       return;
     }
     if (!coords) {
-      toast.error("Please fetch your location before submitting.");
+      toast.error("Please provide latitude and longitude before updating.");
       return;
     }
 
@@ -136,6 +140,7 @@ export default function ManagerLocationForm() {
     setSubmittingUpdate(false);
   };
 
+  // Delete Organisation
   const handleDelete = async () => {
     if (!session || session.user.role !== "manager") {
       toast.error("You must be a manager to delete this.");
@@ -182,6 +187,7 @@ export default function ManagerLocationForm() {
       onSubmit={handleSubmit}
       className="max-w-md mx-auto space-y-4 p-4 border-gray-400 border rounded-md"
     >
+      {/* Organisation Name */}
       <div className="space-y-2">
         <Label htmlFor="organization">Organisation Name</Label>
         <Input
@@ -192,23 +198,47 @@ export default function ManagerLocationForm() {
         />
       </div>
 
+      {/* Location Options */}
       <div className="space-y-2">
         <Label>Location (Latitude, Longitude)</Label>
-        <Input
-          readOnly
-          value={coords ? `${coords.lat}, ${coords.lng}` : ""}
-          placeholder="No location fetched"
-        />
+        <div className="flex gap-2">
+          <Input
+            type="number"
+            step="any"
+            placeholder="Latitude"
+            value={coords?.lat ?? ""}
+            onChange={(e) =>
+              setCoords({
+                lat: e.target.value ? parseFloat(e.target.value) : undefined,
+                lng: coords?.lng,
+              } as any)
+            }
+          />
+
+          <Input
+            type="number"
+            step="any"
+            placeholder="Longitude"
+            value={coords?.lng ?? ""}
+            onChange={(e) =>
+              setCoords({
+                lng: e.target.value ? parseFloat(e.target.value) : undefined,
+                lat: coords?.lat,
+              } as any)
+            }
+          />
+        </div>
         <Button
           type="button"
           variant="secondary"
           onClick={getLocation}
           disabled={loadingLocation}
         >
-          {loadingLocation ? "Fetching..." : "Get Current Location"}
+          {loadingLocation ? "Fetching..." : "Use Current Location"}
         </Button>
       </div>
 
+      {/* Actions */}
       <Button type="submit" className="w-full" disabled={submitting}>
         {submitting ? "Saving..." : "Save Organisation & Location"}
       </Button>

@@ -28,6 +28,7 @@ export default function ManagerCareWorkersList({ careWorkers = [] }: Props) {
         <table className="min-w-[800px] w-full text-xs sm:text-sm text-left border-collapse">
           <thead className="bg-gray-100">
             <tr>
+              <th className="px-2 sm:px-4 py-2 border">Id</th>
               <th className="px-2 sm:px-4 py-2 border">Name</th>
               <th className="px-2 sm:px-4 py-2 border">Email</th>
               <th className="px-2 sm:px-4 py-2 border">Joined On</th>
@@ -39,6 +40,7 @@ export default function ManagerCareWorkersList({ careWorkers = [] }: Props) {
             {careWorkers.length > 0 ? (
               careWorkers.map((worker) => (
                 <tr key={worker.id} className="hover:bg-gray-50">
+                  <td className="px-2 sm:px-4 py-2 border">{worker.id}</td>
                   <td className="px-2 sm:px-4 py-2 border">{worker.username || "-"}</td>
                   <td className="px-2 sm:px-4 py-2 border">{worker.email || "-"}</td>
                   <td className="px-2 sm:px-4 py-2 border whitespace-nowrap">

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface CareWorker {
   id: number;
@@ -20,16 +21,19 @@ interface Shift {
 }
 
 export default function ManagerActiveShiftsList() {
+  const router = useRouter();
   const [shifts, setShifts] = useState<Shift[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const limit = 10; 
+  const limit = 10;
 
   const fetchActiveShifts = async (pageNumber: number) => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/manager/activeShifts?page=${pageNumber}&limit=${limit}`);
+      const res = await fetch(
+        `/api/manager/activeShifts?page=${pageNumber}&limit=${limit}`
+      );
       const data = await res.json();
 
       if (!res.ok) {
@@ -53,6 +57,9 @@ export default function ManagerActiveShiftsList() {
 
   return (
     <div className="max-w-6xl mx-auto p-4 sm:p-6 bg-white rounded-lg shadow space-y-6">
+      <Button variant="outline" onClick={() => router.push("/")}>
+        ← Back to dashboard
+      </Button>
       <h2 className="text-lg sm:text-xl font-semibold">Active Shifts</h2>
 
       <div className="w-full overflow-x-auto border rounded-lg">
@@ -83,7 +90,10 @@ export default function ManagerActiveShiftsList() {
               ))
             ) : (
               <tr>
-                <td colSpan={4} className="text-center py-4 text-gray-500 text-sm">
+                <td
+                  colSpan={4}
+                  className="text-center py-4 text-gray-500 text-sm"
+                >
                   {loading ? "Loading..." : "No active shifts found"}
                 </td>
               </tr>
@@ -93,30 +103,29 @@ export default function ManagerActiveShiftsList() {
       </div>
 
       {/* Pagination Controls */}
-      {totalPages >1 && (<div className="flex justify-center gap-2 pt-4">
-        <Button
-          size="sm"
-          disabled={page === 1 || loading}
-          onClick={() => setPage((prev) => prev - 1)}
-          variant="outline"
-        >
-          Previous
-        </Button>
-        <span className="px-3 py-1 border rounded">
-          Page {page} of {totalPages}
-        </span>
-        <Button
-          size="sm"
-          disabled={page === totalPages || loading}
-          onClick={() => setPage((prev) => prev + 1)}
-          variant="outline"
-        >
-          Next
-        </Button>
-      </div>)}
+      {totalPages > 1 && (
+        <div className="flex justify-center gap-2 pt-4">
+          <Button
+            size="sm"
+            disabled={page === 1 || loading}
+            onClick={() => setPage((prev) => prev - 1)}
+            variant="outline"
+          >
+            Previous
+          </Button>
+          <span className="px-3 py-1 border rounded">
+            Page {page} of {totalPages}
+          </span>
+          <Button
+            size="sm"
+            disabled={page === totalPages || loading}
+            onClick={() => setPage((prev) => prev + 1)}
+            variant="outline"
+          >
+            Next
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
-
-
-              
