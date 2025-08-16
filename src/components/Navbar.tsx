@@ -12,7 +12,7 @@ const Navbar = async () => {
     <div className="bg-zinc-100 py-2 border-b border-zinc-200 fixed w-full z-10 top-0">
       <div className="flex items-center justify-between px-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center justify-center gap-2 font-bold">
+        <Link href="/" className="flex items-center justify-center gap-1 font-semibold">
           <Radar className="h-5 w-5" />
           <span>CARE CLOCK</span>
         </Link>
@@ -29,7 +29,7 @@ const Navbar = async () => {
           </label>
 
           {/* Mobile menu */}
-          <div className="absolute right-0 top-12 bg-white border rounded-md shadow-md w-48 hidden peer-checked:flex flex-col gap-2 p-3">
+          <div className="absolute right-0 top-10 bg-white border rounded-md shadow-md w-48 hidden peer-checked:flex flex-col gap-2 p-3 m-2">
             {session?.user?.role === "care_worker" ? (
               <>
                 <Link
