@@ -35,7 +35,7 @@ export async function GET(req: Request) {
       );
     }
 
-    let whereClause: any = {
+    const whereClause : any = {
       careWorkerId: parseInt(careWorkerId),
       managerId: managerRecord.id, 
     };

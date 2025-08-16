@@ -17,7 +17,7 @@ export async function GET(req: Request) {
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "10", 10);
 
-    let whereClause: any = { careWorkerId: parseInt(session.user.id) };
+    const whereClause: any = { careWorkerId: parseInt(session.user.id) };
 
     if (startDate) {
       whereClause.clockInTime = {
